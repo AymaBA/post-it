@@ -1,0 +1,36 @@
+body{
+	background-color: rgb(165, 165, 165) !important;
+}
+
+.section1{
+	display: flex;
+	justify-content: space-around;
+	flex-direction: column;
+	align-items: center;
+}
+
+.card{
+	border-radius: 15px !important;
+	pointer-events: painted;
+	margin-bottom: 25px;
+}
+
+img{
+	border-radius: 15px !important;
+}
+
+.header{
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 30px;
+	margin-top: 20px;
+}
+
+@media screen and (max-width: 1024px) {
+	.card{
+		border-radius: 15px !important;
+		pointer-events: painted;
+		margin-bottom: 25px;
+		width: 90% !important;
+	}
+  }

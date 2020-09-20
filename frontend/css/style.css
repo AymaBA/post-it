@@ -13,10 +13,13 @@ body{
 	border-radius: 15px !important;
 	pointer-events: painted;
 	margin-bottom: 25px;
+	width: ;
 }
 
 img{
 	border-radius: 15px !important;
+	width: 400px !important;
+	margin: auto auto;
 }
 
 .header{
@@ -27,10 +30,21 @@ img{
 }
 
 @media screen and (max-width: 1024px) {
+
+	.header{
+		justify-content: space-between;
+		padding: 25px;
+	}
 	.card{
 		border-radius: 15px !important;
 		pointer-events: painted;
 		margin-bottom: 25px;
-		width: 90% !important;
+		width:90% !important;
 	}
+	img{
+		border-radius: 15px !important;
+		width: 100% !important;
+		/* margin: auto auto; */
+	}
+	
   }

@@ -15,8 +15,8 @@ const data = async () => {
 	for (let i = 0; i < articles.length; i++) {
 		const element = articles[i];
 		section1.innerHTML += `
-		<div class="card" style="width: 60%; ">
-			<img src="/frontend/asset/d4kd.jpg" class="card-img-top" alt="...">
+		<div class="card" >
+			<img src="http://localhost:5000/static/post-images/${element.image}" class="card-img-top" alt="...">
 			<div class="card-body">
 			  <h1 class="card-text">${element.title}</h1>
 			  <h5 class="card-text">${element.content}</h5>
@@ -25,7 +25,6 @@ const data = async () => {
 			</div>	
 		</div>
 		`;
-		console.log(element);
 	}
 
 })().catch(error => console.error(error));
@@ -34,8 +33,8 @@ const data = async () => {
 socket.on("newArticle",(data)=>{
 	console.log("socket : "+data);
 	$(".section1").prepend(`
-		<div class="card" style="width: 60%; ">
-			<img src="/frontend/asset/d4kd.jpg" class="card-img-top" alt="...">
+		<div class="card" >
+			<img src="http://localhost:5000/static/post-images/${data.image}" class="card-img-top" alt="...">
 			<div class="card-body">
 			  <h1 class="card-text">${data.title}</h1>
 			  <h5 class="card-text">${data.content}</h5>
@@ -50,8 +49,7 @@ socket.on("newArticle",(data)=>{
 form.addEventListener("submit", (e)=>{
 	e.preventDefault();
 	let formData = new FormData(form);
-	console.log(formData);
-
+	formData.append("img",document.querySelector(".custom-file-input").files[0])
 	fetch('http://127.0.0.1:5000/posts', {
 				method: 'post',
 				headers: {
@@ -62,6 +60,13 @@ form.addEventListener("submit", (e)=>{
 					"title": document.querySelector("#exampleInputEmail1").value,
 					"content":document.querySelector("#exampleFormControlTextarea1").value
 				})
+			})
+			
+			fetch('http://127.0.0.1:5000/posts', {
+				method: 'post',
+				body: formData
 			});
+
+			document.location("/")
 })
 

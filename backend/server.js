@@ -20,6 +20,7 @@ try {
 	console.log("Error connect database : " + error);
 }
 
+app.use("/static",express.static(__dirname + '/user-data'));
 app.use("/", require("./routes/post"));
 app.use(bodyParser.json());
 

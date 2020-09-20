@@ -10,6 +10,10 @@ const PostShema = new Shmema({
 		type:String,
 		required:[true,"Content is required in for create article"]
 	},
+	image:{
+		type:String,
+		required:[true,"Image is required in for create article"]
+	},
 	date:{
 		type:Date,
 		default:Date.now

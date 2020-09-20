@@ -10,7 +10,7 @@ const server = http.createServer(router);
 
 const Posts = require("../models/Posts");
 
-io.on("connect", socket=>{
+io.on("connect", socket => {
 	console.log("Client is connected");
 })
 
@@ -22,29 +22,30 @@ router.post("/posts", (req, res) => {
 	const { title, content } = req.body;
 	let file = req.files;
 	let errors = [];
+	// console.log(file.img.name);
 	if (!title || !content || !file) {
 		errors.push({ msg: "Veuillez remplire tous les champs" })
 	} else {
 		let file = req.files.img;
-		
 		let newPost = new Posts({
 			title,
 			content
 		})
-		const image = newPost._id+path.extname(file.name);
-		file.mv("./user-data/post-images/"+image, (err, result)=>{
-			if(err){
-				errors.push({msg : "L'image ne c'est pas envoyé veuillez réesayer"})
-			}else{
-				const image = newPost._id+path.extname(file.name);
-				console.log(image);
-				 newPost = new Posts({
+		const image = newPost._id + path.extname(file.name);
+		
+		file.mv("./user-data/post-images/" + image, (err, result) => {
+			if (err) {
+				errors.push({ msg: "L'image ne c'est pas envoyé veuillez réesayer" })
+			} else {
+				const image = newPost._id + path.extname(file.name);
+				// console.log(image);
+				newPost = new Posts({
 					title,
 					content,
 					image
 				})
 				newPost.save();
-				io.emit("newArticle",newPost)
+				io.emit("newArticle", newPost)
 				console.log("Post send");
 			}
 		});
@@ -53,10 +54,10 @@ router.post("/posts", (req, res) => {
 });
 
 router.get("/posts", (req, res) => {
-	let posts = Posts.find({}, (err , result) => {
+	let posts = Posts.find({}, (err, result) => {
 		res.json(result);
 		console.log("get article");
-	}).sort({$natural: -1});
+	}).sort({ $natural: -1 });
 });
 
 module.exports = router;

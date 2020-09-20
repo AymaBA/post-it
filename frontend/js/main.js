@@ -1,3 +1,5 @@
+
+
 const section1 = document.querySelector(".section1");
 const socket = io.connect("http://127.0.0.1:5100");
 const form = document.querySelector(".form-posts");
@@ -30,8 +32,8 @@ const data = async () => {
 })().catch(error => console.error(error));
 
 
-socket.on("newArticle",(data)=>{
-	console.log("socket : "+data);
+socket.on("newArticle", (data) => {
+	console.log("socket : " + data);
 	$(".section1").prepend(`
 		<div class="card" >
 			<img src="http://localhost:5000/static/post-images/${data.image}" class="card-img-top" alt="...">
@@ -46,27 +48,40 @@ socket.on("newArticle",(data)=>{
 })
 
 
-form.addEventListener("submit", (e)=>{
+form.addEventListener("submit", (e) => {
 	e.preventDefault();
+	document.querySelector(".btn-submit").disabled = true;
 	let formData = new FormData(form);
-	formData.append("img",document.querySelector(".custom-file-input").files[0])
+	formData.append("img", document.querySelector(".custom-file-input").files[0])
 	fetch('http://127.0.0.1:5000/posts', {
-				method: 'post',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					"title": document.querySelector("#exampleInputEmail1").value,
-					"content":document.querySelector("#exampleFormControlTextarea1").value
-				})
-			})
-			
-			fetch('http://127.0.0.1:5000/posts', {
-				method: 'post',
-				body: formData
-			});
+		method: 'post',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			"title": document.querySelector("#exampleInputEmail1").value,
+			"content": document.querySelector("#exampleFormControlTextarea1").value
+		})
+	}).then(response => response.json())
+		.then(responseData => {
+			console.log(responseData.errors.length);
+			if (responseData.errors.length > 0) {
+				document.querySelector(".error").innerHTML = `<div class="alert alert-danger" data-dismiss="alert" role="alert">
+ 																	${responseData.errors[0].msg}
+																</div>`
+			document.querySelector(".btn-submit").disabled = false;
+			} else {
+				console.log("2nd cas " + responseData.errors);
+			}
+		})
 
-			document.location("/")
+
+	fetch('http://127.0.0.1:5000/posts', {
+		method: 'post',
+		body: formData
+	});
+
+	// document.location("/")
 })
 

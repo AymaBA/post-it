@@ -1,3 +1,12 @@
+// if ("serviceWorker" in navigator) {
+// 	navigator.serviceWorker.register("sw.js").then(registration =>{
+// 		console.log("SW registered");
+// 		console.log(registration);
+// 	}).catch(err=>{
+// 		console.log("SW not registreted");
+// 		console.log(err);
+// 	})
+// }
 
 
 const section1 = document.querySelector(".section1");
@@ -7,9 +16,6 @@ const form = document.querySelector(".form-posts");
 const data = async () => {
 	return (await fetch("http://127.0.0.1:5000/posts")).json();
 };
-
-
-
 
 (async () => {
 	let articles = await data();
@@ -28,7 +34,6 @@ const data = async () => {
 		</div>
 		`;
 	}
-
 })().catch(error => console.error(error));
 
 
@@ -45,43 +50,36 @@ socket.on("newArticle", (data) => {
 			</div>	
 		</div>
 		`);
-})
-
+});
 
 form.addEventListener("submit", (e) => {
 	e.preventDefault();
 	document.querySelector(".btn-submit").disabled = true;
 	let formData = new FormData(form);
-	formData.append("img", document.querySelector(".custom-file-input").files[0])
+	// formData.append("img", document.querySelector(".custom-file-input").files[0]);
 	fetch('http://127.0.0.1:5000/posts', {
 		method: 'post',
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({
+		body:formData /*JSON.stringify({
 			"title": document.querySelector("#exampleInputEmail1").value,
 			"content": document.querySelector("#exampleFormControlTextarea1").value
-		})
-	}).then(response => response.json())
-		.then(responseData => {
-			console.log(responseData.errors.length);
-			if (responseData.errors.length > 0) {
+		})*/
+	})
+		.then(response => response.json())
+		.then(response => {
+			if (response.errors.length > 0) {
 				document.querySelector(".error").innerHTML = `<div class="alert alert-danger" data-dismiss="alert" role="alert">
- 																	${responseData.errors[0].msg}
-																</div>`
-			document.querySelector(".btn-submit").disabled = false;
-			} else {
-				console.log("2nd cas " + responseData.errors);
+ 																	${response.errors[0].msg}
+																</div>`;
+				document.querySelector(".btn-submit").disabled = false;
 			}
-		})
+		});
 
-
-	fetch('http://127.0.0.1:5000/posts', {
-		method: 'post',
-		body: formData
-	});
-
-	// document.location("/")
-})
-
+	// fetch('http://127.0.0.1:5000/posts', {
+	// 	method: 'post',
+	// 	body: formData
+	// });
+});

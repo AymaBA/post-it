@@ -1,3 +1,6 @@
 node_modules
 package-lock.json
-user-data
+*.jpg
+*.jpeg
+*.png
+*.gif
